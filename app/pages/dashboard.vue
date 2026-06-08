@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'auth',
+});
+
 const { data, pending, error, refresh } = await useFetch('/api/db_values', {
   key: 'db_values',
 })
