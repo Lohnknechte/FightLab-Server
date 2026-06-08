@@ -25,6 +25,3 @@ logs
 
 .vercel
 .env*
-
-# drizzle database files
-/server/db/drizzle/
