@@ -1,4 +1,3 @@
-// index.js
 const { WebSocketServer } = require('ws');
 
 // Port mapping for Render or local testing
@@ -8,6 +7,16 @@ const wss = new WebSocketServer({ port: PORT });
 // Structure: Map of roomCodes -> { host: WebSocket, clients: Map(peerId -> WebSocket) }
 const rooms = new Map();
 let nextPeerId = 2; // Godot expects Host to be 1. Clients get 2, 3, 4, etc.
+
+// Generates a 20-character alphanumeric code
+function generateRoomCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 20; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
 
 wss.on('connection', (ws) => {
     let currentRoom = null;
@@ -26,8 +35,8 @@ wss.on('connection', (ws) => {
         // 1. HOST CREATES A ROOM
         // ==========================================
         if (msg.type === "host_room") {
-            // Generate a random 4-character code (e.g. "X8K9")
-            const roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+            // Generate a random 20-character code
+            const roomCode = generateRoomCode();
             
             rooms.set(roomCode, { host: ws, clients: new Map() });
             currentRoom = roomCode;
@@ -43,7 +52,7 @@ wss.on('connection', (ws) => {
         // 2. CLIENT JOINS A ROOM
         // ==========================================
         if (msg.type === "join_room") {
-            const requestedRoom = msg.room.toUpperCase();
+            const requestedRoom = msg.room; // Exact case sensitivity needed!
             const room = rooms.get(requestedRoom);
             
             if (!room) {
