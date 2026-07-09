@@ -1,17 +1,11 @@
 {
-  "name": "nuxt-app",
-  "type": "module",
-  "private": true,
+  "name": "webrtc-signaling-server",
+  "version": "1.0.0",
+  "main": "src/index.js",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "start": "node src/index.js"
   },
   "dependencies": {
-    "nuxt": "^4.4.7",
-    "vue": "^3.5.35",
-    "vue-router": "^5.1.0"
+    "ws": "^8.16.0"
   }
 }
